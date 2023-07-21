@@ -20,16 +20,18 @@
 
 
 <script>
-import { AppState } from "../AppState";
 import { computed } from "vue";
-import Pop from "../utils/Pop.js";
-import { logger } from "../utils/Logger.js";
+import { useRoute, useRouter } from "vue-router";
+import { AppState } from "../AppState";
 import { carsService } from "../services/CarsService.js";
-import { useRoute } from "vue-router";
+import { logger } from "../utils/Logger.js";
+import Pop from "../utils/Pop.js";
+
 export default {
   props: { car: { type: Object, required: true } },
   setup(props) {
-    const router = useRoute();
+    const route = useRoute();
+    const router = useRouter();
     return {
       account: computed(() => AppState.account),
       async removeCar() {
@@ -38,7 +40,7 @@ export default {
           // NOTE you can pass the id from the template OR
           // await carsService.removeCar(id)
           // NOTE you can pull it from props
-          await carsService.removeCar(car.id);
+          await carsService.removeCar(props.car.id);
         } catch (error) {
           Pop.error(error);
           logger.error(error);
@@ -46,7 +48,7 @@ export default {
       },
       goTo() {
         logger.log("pushing");
-        router.push({ name: "CarDetails", params: { id: props.car.id } });
+        router.push({ name: "CarDetails", params: { carId: props.car.id } });
       },
     };
   },

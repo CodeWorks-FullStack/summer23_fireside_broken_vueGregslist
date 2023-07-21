@@ -11,7 +11,7 @@
       </div>
       <div class="col-6 d-flex flex-column justify-content-between">
         <p>{{ car.description }}</p>
-        <h3 class="bg-success p-2 text-dark rounded-pill">${{ car }}</h3>
+        <h3 class="bg-success p-2 text-dark rounded-pill">${{ car.price }}</h3>
       </div>
       <button
         v-if="car.creatorId == account.id"
@@ -33,19 +33,19 @@
 
 
 <script>
-import { AppState } from "../AppState";
-import { computed, reactive, onMounted, ref } from "vue";
-import Pop from "../utils/Pop.js";
-import { logger } from "../utils/Logger.js";
-import { carsService } from "../services/CarsService.js";
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import { AppState } from "../AppState";
+import { carsService } from "../services/CarsService.js";
+import { logger } from "../utils/Logger.js";
+import Pop from "../utils/Pop.js";
 export default {
   setup() {
     const route = useRoute();
     const editMode = ref(false);
     async function getCarById() {
       try {
-        await carsService.getCarById(route.params.id);
+        await carsService.getCarById(route.params.carId);
       } catch (error) {
         Pop.error(error);
         logger.error(error);

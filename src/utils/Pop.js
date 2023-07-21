@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import { AppState } from '../AppState.js'
 import { logger } from './Logger.js'
 
 export default class Pop {
@@ -61,6 +62,7 @@ export default class Pop {
    */
   static error(error, eventTrigger = '') {
     logger.error(eventTrigger, error)
+    AppState.error = error
 
     if (error.isAxiosError) {
       const { response } = error

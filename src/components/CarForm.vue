@@ -87,7 +87,7 @@
     <div class="mb-3 col-4">
       <button
         class="btn w-100 rounded-pill selectable text-danger darken-20"
-        type="button"
+        type="reset"
         @click="editFalse"
       >
         Cancel
@@ -105,10 +105,10 @@
 
 <script>
 import { onMounted, ref } from "vue";
-import Pop from "../utils/Pop.js";
-import { logger } from "../utils/Logger.js";
-import { carsService } from "../services/CarsService.js";
 import { useRouter } from "vue-router";
+import { carsService } from "../services/CarsService.js";
+import { logger } from "../utils/Logger.js";
+import Pop from "../utils/Pop.js";
 export default {
   props: { carData: { type: Object, default: {} } },
   // NOTE emit is black magic and should only be used in very rare cases AKA not friday
@@ -123,7 +123,7 @@ export default {
       try {
         // NOTE if using ref in setup, you must access the value
         // await carsService.createCar(editable.value)
-        await carsService.createCar(editable);
+        await carsService.createCar(editable.value);
         editable.value = {};
         Pop.toast("created Car", "success");
       } catch (error) {
@@ -136,7 +136,7 @@ export default {
       try {
         // NOTE if using ref in setup, you must access the value
         // await carsService.createCar(editable.value)
-        await carsService.editCar(edit.value);
+        await carsService.editCar(editable.value);
         // editable.value = {}
         Pop.toast("edited Car", "success");
         // NOTE emit tells the parent this event has happened
@@ -159,6 +159,7 @@ export default {
 
       editFalse() {
         emit("carEdited");
+        editable.value = {}
       },
     };
   },
